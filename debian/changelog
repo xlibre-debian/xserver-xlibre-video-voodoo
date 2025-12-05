@@ -1,3 +1,9 @@
+xserver-xlibre-video-voodoo (1:1.2.6.3-1) unstable; urgency=medium
+
+  * New upstream version 1.2.6.3
+
+ -- NexusSfan <nexussfan@duck.com>  Thu, 04 Dec 2025 17:16:23 -0800
+
 xserver-xlibre-video-voodoo (1:1.2.6.2-1) unstable; urgency=medium
 
   * New upstream version 1.2.6.2

@@ -1,7 +1,7 @@
 Source: xserver-xlibre-video-voodoo
 Section: x11
 Priority: optional
-Maintainer: apebl <a@pebl.cc>
+Maintainer: NexusSfan <nexussfan@duck.com>
 Build-Depends:
  debhelper (>= 8),
  dh-autoreconf,

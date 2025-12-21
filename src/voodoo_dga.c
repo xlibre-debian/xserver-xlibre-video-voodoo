@@ -32,10 +32,7 @@
  * THIS SOFTWARE IS NOT DESIGNED FOR USE IN SAFETY CRITICAL SYSTEMS OF
  * ANY KIND OR FORM.
  */
-
-#ifdef HAVE_CONFIG_H
 #include "config.h"
-#endif
 
 #include "fb.h"
 #include "micmap.h"
@@ -51,15 +48,7 @@
 
 #define _XF86DGA_SERVER_
 #include <X11/extensions/xf86dgaproto.h>
-
-#ifdef HAVE_XEXTPROTO_71
 #include <X11/extensions/dpmsconst.h>
-#else
-#define DPMS_SERVER
-#include <X11/extensions/dpms.h>
-#endif
-
-
 
  /***********************************************************************
  * DGA stuff

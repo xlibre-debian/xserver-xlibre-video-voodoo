@@ -33,10 +33,7 @@
  *		http://www.machinaesupremacy.com
  *		http://www.magnatune.com
  */
-
-#ifdef HAVE_CONFIG_H
 #include "config.h"
-#endif
 
 #include "fb.h"
 #include "micmap.h"
@@ -51,13 +48,7 @@
 #include "voodoo.h"
 
 #include <X11/extensions/xf86dgaproto.h>
-
-#ifdef HAVE_XEXTPROTO_71
 #include <X11/extensions/dpmsconst.h>
-#else
-#define DPMS_SERVER
-#include <X11/extensions/dpms.h>
-#endif
 
 #include "mipict.h"
 #include "dixstruct.h"

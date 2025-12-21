@@ -38,11 +38,7 @@
  * THIS SOFTWARE IS NOT DESIGNED FOR USE IN SAFETY CRITICAL SYSTEMS OF
  * ANY KIND OR FORM.
  */
-
-
-#ifdef HAVE_CONFIG_H
 #include "config.h"
-#endif
 
 #include "fb.h"
 #include "micmap.h"
@@ -58,14 +54,7 @@
 
 #define _XF86DGA_SERVER_
 #include <X11/extensions/xf86dgaproto.h>
-
-#ifdef HAVE_XEXTPROTO_71
 #include <X11/extensions/dpmsconst.h>
-#else
-#define DPMS_SERVER
-#include <X11/extensions/dpms.h>
-#endif
-
 
 static const OptionInfoRec * VoodooAvailableOptions(int chipid, int busid);
 static void	VoodooIdentify(int flags);
@@ -125,8 +114,6 @@ static SymTabRec VoodooChipsets[] = {
   {-1, NULL }
 };
 
-#ifdef XFree86LOADER
-
 static XF86ModuleVersionInfo voodooVersRec =
 {
   "voodoo",
@@ -160,8 +147,6 @@ _X_EXPORT XF86ModuleData voodooModuleData = {
   voodooSetup,
   NULL
 };
-
-#endif /* XFree86LOADER */
 
 static Bool
 VoodooGetRec(ScrnInfoPtr pScrn)
@@ -234,9 +219,6 @@ VoodooProbe(DriverPtr drv, int flags)
     }
 
     /* PCI BUS */
-#ifndef XSERVER_LIBPCIACCESS
-    if (xf86GetPciVideoInfo() )
-#endif
     {
 	numUsed = xf86MatchPciInstances(VOODOO_NAME, PCI_VENDOR_3DFX,
 					VoodooChipsets, VoodooPCIChipsets, 
@@ -372,9 +354,6 @@ VoodooPreInit(ScrnInfoPtr pScrn, int flags)
   pVoo->pEnt = xf86GetEntityInfo(pScrn->entityList[0]);
   
   pVoo->PciInfo = xf86GetPciInfoForEntity(pVoo->pEnt->index);
-#ifndef XSERVER_LIBPCIACCESS
-  pVoo->PciTag = pciTag(pVoo->PciInfo->bus, pVoo->PciInfo->device, pVoo->PciInfo->func);
-#endif
 
   /* Collect all of the relevant option flags (fill in pScrn->options) */
   xf86CollectOptions(pScrn, NULL);
@@ -424,13 +403,6 @@ VoodooPreInit(ScrnInfoPtr pScrn, int flags)
   /* MMIO at 0 , FB at 4Mb, Texture at 8Mb */
   pVoo->PhysBase = PCI_REGION_BASE(pVoo->PciInfo, 0, REGION_MEM) + 0x400000;
 
-#ifndef XSERVER_LIBPCIACCESS
-  pVoo->MMIO = xf86MapPciMem(pScrn->scrnIndex, VIDMEM_MMIO, pVoo->PciTag,
-			     pVoo->PciInfo->memBase[0], 0x400000);
-  pVoo->FBBase = xf86MapPciMem(pScrn->scrnIndex, VIDMEM_MMIO, pVoo->PciTag,
-			       pVoo->PciInfo->memBase[0] + 0x400000, 0x400000);
-  		
-#else
   {
     void** result = (void**)&pVoo->MMIO;
     int err = pci_device_map_range(pVoo->PciInfo,
@@ -453,7 +425,6 @@ VoodooPreInit(ScrnInfoPtr pScrn, int flags)
     if (err)
       return FALSE;
   }
-#endif  		
   VoodooHardwareInit(pVoo);
   
   /*

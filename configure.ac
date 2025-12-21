@@ -22,10 +22,10 @@
 
 # Initialize Autoconf
 AC_PREREQ([2.60])
-AC_INIT([xf86-video-voodoo],
-        [1.2.6],
-        [https://gitlab.freedesktop.org/xorg/driver/xf86-video-voodoo/-/issues],
-        [xf86-video-voodoo])
+AC_INIT([xlibre-xf86-video-voodoo],
+        [25.0.0],
+        [https://github.com/X11Libre/xf86-video-voodoo/issues],
+        [xlibre-xf86-video-voodoo])
 AC_CONFIG_SRCDIR([Makefile.am])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_AUX_DIR(.)
@@ -59,39 +59,11 @@ XORG_DRIVER_CHECK_EXT(DPMSExtension, xextproto)
 
 # Obtain compiler/linker options for the driver dependencies
 PKG_CHECK_MODULES(XORG, [xorg-server >= 1.18 xproto fontsproto xf86dgaproto $REQUIRED_MODULES])
-PKG_CHECK_MODULES(XEXT, [xextproto >= 7.0.99.1],
-                  HAVE_XEXTPROTO_71="yes"; AC_DEFINE(HAVE_XEXTPROTO_71, 1, [xextproto 7.1 available]),
-                  HAVE_XEXTPROTO_71="no")
-AM_CONDITIONAL(HAVE_XEXTPROTO_71, [ test "$HAVE_XEXTPROTO_71" = "yes" ])
-
-# Checks for library functions
-# We don't use strlcat, strlcpy, or timingsafe_memcmp, but check to quiet
-# -Wredundant-decls warning from xorg/os.h which will otherwise redefine them.
-AC_CHECK_FUNCS([strlcat strlcpy timingsafe_memcmp])
-
-SAVE_CPPFLAGS="$CPPFLAGS"
-CPPFLAGS="$CPPFLAGS $XORG_CFLAGS"
-AC_CHECK_DECL(XSERVER_LIBPCIACCESS,
-              [XSERVER_LIBPCIACCESS=yes],[XSERVER_LIBPCIACCESS=no],
-              [#include "xorg-server.h"])
-AC_CHECK_HEADER(xf1bpp.h,[AC_DEFINE(HAVE_XF1BPP, 1, [Have 1bpp support])],[])
-AC_CHECK_HEADER(xf4bpp.h,[AC_DEFINE(HAVE_XF4BPP, 1, [Have 4bpp support])],[])
-CPPFLAGS="$SAVE_CPPFLAGS"
-
-if test "x$XSERVER_LIBPCIACCESS" = xyes; then
-    PKG_CHECK_MODULES([PCIACCESS], [pciaccess >= 0.8.0])
-    XORG_CFLAGS="$XORG_CFLAGS $PCIACCESS_CFLAGS"
-fi
-AM_CONDITIONAL(XSERVER_LIBPCIACCESS, test "x$XSERVER_LIBPCIACCESS" = xyes)
+PKG_CHECK_MODULES(XEXT, [xextproto >= 7.0.99.1])
+PKG_CHECK_MODULES([PCIACCESS], [pciaccess >= 0.8.0])
+XORG_CFLAGS="$XORG_CFLAGS $PCIACCESS_CFLAGS"
 
 AC_SUBST([moduledir])
 
-DRIVER_NAME=voodoo
-AC_SUBST([DRIVER_NAME])
-
-AC_CONFIG_FILES([
-                Makefile
-                src/Makefile
-                man/Makefile
-])
+AC_CONFIG_FILES([Makefile src/Makefile man/Makefile])
 AC_OUTPUT

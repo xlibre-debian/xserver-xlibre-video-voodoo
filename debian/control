@@ -17,8 +17,8 @@ Build-Depends:
  x11proto-render-dev,
  libpciaccess-dev (>= 0.8),
 Standards-Version: 3.9.4
-Vcs-Git: https://github.com/xlibre-deb/xserver-xlibre-video-voodoo.git
-Vcs-Browser: https://github.com/xlibre-deb/xserver-xlibre-video-voodoo
+Vcs-Git: https://github.com/xlibre-debian/xserver-xlibre-video-voodoo.git
+Vcs-Browser: https://github.com/xlibre-debian/xserver-xlibre-video-voodoo
 Homepage: https://github.com/X11Libre
 
 Package: xserver-xlibre-video-voodoo
